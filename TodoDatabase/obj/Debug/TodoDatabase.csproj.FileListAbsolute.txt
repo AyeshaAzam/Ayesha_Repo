@@ -1,0 +1,11 @@
+C:\Waqar\Backendutvklare\Csharp\Products\TodoDatabase\bin\Debug\TodoDatabase.exe.config
+C:\Waqar\Backendutvklare\Csharp\Products\TodoDatabase\bin\Debug\TodoDatabase.exe
+C:\Waqar\Backendutvklare\Csharp\Products\TodoDatabase\bin\Debug\TodoDatabase.pdb
+C:\Waqar\Backendutvklare\Csharp\Products\TodoDatabase\obj\Debug\TodoDatabase.csprojResolveAssemblyReference.cache
+C:\Waqar\Backendutvklare\Csharp\Products\TodoDatabase\obj\Debug\TodoDatabase.exe
+C:\Waqar\Backendutvklare\Csharp\Products\TodoDatabase\obj\Debug\TodoDatabase.pdb
+C:\Users\AYESHA\Desktop\Backend-utvecklingC#\Block4_4.4GroupProject\Products\TodoDatabase\bin\Debug\TodoDatabase.exe.config
+C:\Users\AYESHA\Desktop\Backend-utvecklingC#\Block4_4.4GroupProject\Products\TodoDatabase\bin\Debug\TodoDatabase.exe
+C:\Users\AYESHA\Desktop\Backend-utvecklingC#\Block4_4.4GroupProject\Products\TodoDatabase\bin\Debug\TodoDatabase.pdb
+C:\Users\AYESHA\Desktop\Backend-utvecklingC#\Block4_4.4GroupProject\Products\TodoDatabase\obj\Debug\TodoDatabase.exe
+C:\Users\AYESHA\Desktop\Backend-utvecklingC#\Block4_4.4GroupProject\Products\TodoDatabase\obj\Debug\TodoDatabase.pdb

@@ -1,0 +1,9 @@
+C:\Waqar\Backendutvklare\Csharp\Products\ProductInterfaces\bin\Debug\ProductInterfaces.dll
+C:\Waqar\Backendutvklare\Csharp\Products\ProductInterfaces\bin\Debug\ProductInterfaces.pdb
+C:\Waqar\Backendutvklare\Csharp\Products\ProductInterfaces\obj\Debug\ProductInterfaces.dll
+C:\Waqar\Backendutvklare\Csharp\Products\ProductInterfaces\obj\Debug\ProductInterfaces.pdb
+C:\Waqar\Backendutvklare\Csharp\Products\ProductInterfaces\obj\Debug\ProductInterfaces.csprojResolveAssemblyReference.cache
+C:\Users\AYESHA\Desktop\Backend-utvecklingC#\Block4_4.4GroupProject\Products\ProductInterfaces\bin\Debug\ProductInterfaces.dll
+C:\Users\AYESHA\Desktop\Backend-utvecklingC#\Block4_4.4GroupProject\Products\ProductInterfaces\bin\Debug\ProductInterfaces.pdb
+C:\Users\AYESHA\Desktop\Backend-utvecklingC#\Block4_4.4GroupProject\Products\ProductInterfaces\obj\Debug\ProductInterfaces.dll
+C:\Users\AYESHA\Desktop\Backend-utvecklingC#\Block4_4.4GroupProject\Products\ProductInterfaces\obj\Debug\ProductInterfaces.pdb

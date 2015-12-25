@@ -1,0 +1,16 @@
+C:\Waqar\Backendutvklare\Csharp\Products\ProductsClient\bin\Debug\ProductsClient.exe.config
+C:\Waqar\Backendutvklare\Csharp\Products\ProductsClient\bin\Debug\ProductsClient.exe
+C:\Waqar\Backendutvklare\Csharp\Products\ProductsClient\bin\Debug\ProductsClient.pdb
+C:\Waqar\Backendutvklare\Csharp\Products\ProductsClient\obj\Debug\ProductsClient.csprojResolveAssemblyReference.cache
+C:\Waqar\Backendutvklare\Csharp\Products\ProductsClient\obj\Debug\ProductsClient.exe
+C:\Waqar\Backendutvklare\Csharp\Products\ProductsClient\obj\Debug\ProductsClient.pdb
+C:\Waqar\Backendutvklare\Csharp\Products\ProductsClient\bin\Debug\ProductInterfaces.dll
+C:\Waqar\Backendutvklare\Csharp\Products\ProductsClient\bin\Debug\ProductInterfaces.pdb
+C:\Users\AYESHA\Desktop\Backend-utvecklingC#\Block4_4.4GroupProject\Products\ProductsClient\bin\Debug\ProductsClient.exe.config
+C:\Users\AYESHA\Desktop\Backend-utvecklingC#\Block4_4.4GroupProject\Products\ProductsClient\bin\Debug\ProductsClient.exe
+C:\Users\AYESHA\Desktop\Backend-utvecklingC#\Block4_4.4GroupProject\Products\ProductsClient\bin\Debug\ProductsClient.pdb
+C:\Users\AYESHA\Desktop\Backend-utvecklingC#\Block4_4.4GroupProject\Products\ProductsClient\bin\Debug\ProductInterfaces.dll
+C:\Users\AYESHA\Desktop\Backend-utvecklingC#\Block4_4.4GroupProject\Products\ProductsClient\bin\Debug\ProductInterfaces.pdb
+C:\Users\AYESHA\Desktop\Backend-utvecklingC#\Block4_4.4GroupProject\Products\ProductsClient\obj\Debug\ProductsClient.csprojResolveAssemblyReference.cache
+C:\Users\AYESHA\Desktop\Backend-utvecklingC#\Block4_4.4GroupProject\Products\ProductsClient\obj\Debug\ProductsClient.exe
+C:\Users\AYESHA\Desktop\Backend-utvecklingC#\Block4_4.4GroupProject\Products\ProductsClient\obj\Debug\ProductsClient.pdb
