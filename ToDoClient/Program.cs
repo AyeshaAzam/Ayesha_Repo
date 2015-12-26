@@ -28,6 +28,14 @@ namespace ToDoClient
             Console.WriteLine("7. Set ToDo status to finished");
             Console.WriteLine("8. Exit");
         }
+        private void PrintToDo(ToDo toDo)
+        {
+            Console.WriteLine("\nID\tDescription\tName\tCreated Date\t\tDeadline\t\tEstimation Time\tFinished");
+            Console.WriteLine("{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t\t{6}",
+                toDo.Id, toDo.Description, toDo.Name, toDo.CreatedDate, toDo.DeadLine, toDo.EstimationTime, toDo.Finnished);
+            Console.ReadLine();
+        }
+
         private void PrintToDoList(String name = "")
         {
             List<ToDo> toDos = null;
@@ -46,7 +54,7 @@ namespace ToDoClient
                 Console.WriteLine("{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t\t{6}",
                     p.Id, p.Description, p.Name, p.CreatedDate, p.DeadLine, p.EstimationTime, p.Finnished);
             }
-            Console.WriteLine("\nPress Enter to Continue!!!");
+            Console.WriteLine("\nPress any key to Continue!!!");
             Console.ReadLine();
         }
 
@@ -54,52 +62,107 @@ namespace ToDoClient
         {
             Console.Write("Description : ");
             string desc = Console.ReadLine().ToString();
+
             Console.Write("Name : ");
             string name = Console.ReadLine().ToString();
+
             Console.Write("Deadline : ");
-            DateTime deadline = Convert.ToDateTime(Console.ReadLine().ToString());
+            string deadlineInput = Console.ReadLine();
+            DateTime deadline;
+            if(!DateTime.TryParse(deadlineInput, out deadline))
+            {
+                Console.WriteLine("Not a valid \"Deadline\" input, setting default deadline to current time!");
+                deadline = DateTime.Now;
+            }
+
             Console.Write("Estimation Time : ");
-            int estimation = Convert.ToInt32(Console.ReadLine());
+            string estimationInput = Console.ReadLine();
+            int estimation;
+            if(!int.TryParse(estimationInput, out estimation))
+            {
+                Console.WriteLine("Not a valid \"Estimation Time\", setting default estimation time to 1 hr");
+                estimation = 1;
+            }
+
             Console.Write("Finished : ");
-            bool finished = Convert.ToInt32(Console.ReadLine()) == 0 ? false : true;
+            string finishedInput = Console.ReadLine();
+            bool finished;
+            if(!bool.TryParse(finishedInput, out finished))
+            {
+                Console.WriteLine("Not a valid \"Finished\" status, setting default finished satus to false");
+                finished = false;
+            }
 
             AddToDo(desc, name, deadline, estimation, finished);
         }
 
-        private void AddToDo(/*int id, */string desc, string name, /*DateTime created,*/ DateTime deadline, int estimation, bool finished)
+        private void AddToDo(string desc, string name, DateTime deadline, int estimation, bool finished)
         {
-            ToDo addToDo = new ToDo();
-            //addToDo.Id = id;
-            addToDo.Description = desc;
-            addToDo.Name = name;
-            addToDo.CreatedDate = DateTime.Now;
-            addToDo.DeadLine = deadline;
-            addToDo.EstimationTime = estimation;
-            addToDo.Finnished = finished;
-            proxy.AddToDo(addToDo);
-            Console.WriteLine("Following item added to ToDo list for {0}\n", addToDo.Name);
-            Console.WriteLine("ID\tDescription\tName\tCreated Date\t\tDeadline\t\tEstimation Time\tFinished");
-            Console.WriteLine("{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t\t{6}",
-                addToDo.Id, addToDo.Description, addToDo.Name, addToDo.CreatedDate, addToDo.DeadLine, addToDo.EstimationTime, addToDo.Finnished);
-            Console.ReadLine();
+            ToDo toDo = new ToDo();
+            toDo.Description = desc;
+            toDo.Name = name;
+            toDo.CreatedDate = DateTime.Now;
+            toDo.DeadLine = deadline;
+            toDo.EstimationTime = estimation;
+            toDo.Finnished = finished;
+
+            proxy.AddToDo(toDo);
+
+            Console.WriteLine("Following item added to ToDo list for {0}", toDo.Name);
+            PrintToDo(toDo);
         }
 
         private void UpdateToDoStatus()
         {
             Console.Write("ID : ");
-            int id = Convert.ToInt32(Console.ReadLine());
-            Console.Write("Status : ");
-            bool status = Convert.ToInt32(Console.ReadLine()) == 0 ? false : true;
-            ToDo toDo = proxy.GetToDoById(id);
-            toDo.Finnished = status;
-            proxy.UpdateToDo(toDo);
+            string idInput = Console.ReadLine();
+            int id = 0;
+            if(int.TryParse(idInput, out id))
+            {
+                ToDo toDo = proxy.GetToDoById(id);
+                if (toDo != null)
+                {
+                    Console.Write("Status : ");
+                    bool status = Convert.ToInt32(Console.ReadLine()) == 0 ? false : true;
+                    toDo.Finnished = status;
+                    proxy.UpdateToDo(toDo);
+                    Console.WriteLine("Status for ToDo with ID:{0} updated to {1}", id, status ? "Finished" : "Not finished");
+                    PrintToDo(toDo);
+                }
+                else
+                {
+                    Console.WriteLine("ToDo with ID:{0} not found!", idInput);
+                    Console.ReadLine();
+                }
+            }
+            else
+            {
+                Console.WriteLine("Not a valid ID:{0}!", idInput);
+                Console.ReadLine();
+            }
         }
 
         private void DeletToDoItem()
         {
             Console.Write("ID : ");
-            int id = Convert.ToInt32(Console.ReadLine());
+            string idInput = Console.ReadLine();
+            int id;
+            if (!int.TryParse(idInput, out id))
+            {
+                Console.WriteLine("Not a valid ID:{0}!", idInput);
+                Console.ReadLine();
+                return;
+            }
+            ToDo toDo = proxy.GetToDoById(id);
+            if(toDo == null)
+            {
+                Console.WriteLine("ToDo with ID:{0} not found!", id);
+                Console.ReadLine();
+                return;
+            }
             proxy.DeleteToDo(id);
+            Console.WriteLine("ToDo with ID:{0} deleted!", id);
+            PrintToDo(toDo);
         }
 
         static void Main(string[] args)
