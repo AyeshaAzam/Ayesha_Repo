@@ -19,6 +19,9 @@ namespace ToDoClient
         private void PrintMenu()
         {
             Console.Clear();
+            Console.WriteLine("/***********************************/");
+            Console.WriteLine("/*         TODO Main Menu          */");
+            Console.WriteLine("/***********************************/");
             Console.WriteLine("1. Get ToDo list");
             Console.WriteLine("2. Get ToDo list by name");
             Console.WriteLine("3. Create new ToDo list");
@@ -27,6 +30,8 @@ namespace ToDoClient
             Console.WriteLine("6. Add an item to ToDo list");
             Console.WriteLine("7. Set ToDo status to finished");
             Console.WriteLine("8. Exit");
+
+            Console.Write("\nSelect option: ");
         }
         private void PrintToDo(ToDo toDo)
         {
@@ -38,60 +43,82 @@ namespace ToDoClient
 
         private void PrintToDoList(String name = "")
         {
-            List<ToDo> toDos = null;
+            List<ToDo> toDoList = null;
             if (name.Length == 0)
             {
-                toDos = proxy.GetToDoList();
+                toDoList = proxy.GetToDoList();
             }
             else
             {
-                toDos = proxy.GetDoDoListByName(name);
+                toDoList = proxy.GetDoDoListByName(name);
             }
-            Console.WriteLine("ID\tDescription\tName\tCreated Date\t\tDeadline\t\tEstimation Time\tFinished");
 
-            foreach (var p in toDos)
+            if(toDoList.Count > 0)
             {
-                Console.WriteLine("{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t\t{6}",
-                    p.Id, p.Description, p.Name, p.CreatedDate, p.DeadLine, p.EstimationTime, p.Finnished);
+                Console.WriteLine("ID\tDescription\tName\tCreated Date\t\tDeadline\t\tEstimation Time\tFinished");
+                foreach (var toDo in toDoList)
+                {
+                    Console.WriteLine("{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t\t{6}",
+                        toDo.Id, toDo.Description, toDo.Name, toDo.CreatedDate, toDo.DeadLine, toDo.EstimationTime, toDo.Finnished);
+                }
             }
+
+            if(toDoList.Count == 0)
+            {
+                if(name.Length > 0)
+                {
+                    Console.WriteLine("No ToDo with name \"{0}\" exists!", name);
+                }
+                else
+                {
+                    // ToDo list empty
+                    Console.WriteLine("ID\tDescription\tName\tCreated Date\t\tDeadline\t\tEstimation Time\tFinished");
+                }
+            }
+
             Console.WriteLine("\nPress any key to Continue!!!");
             Console.ReadLine();
         }
 
         private void GetToDoFromUser()
         {
-            Console.Write("Description : ");
-            string desc = Console.ReadLine().ToString();
+            string desc;
+            bool error = false;
+            do
+            {
+                if(error) //initially no error, is used for retries
+                {
+                    Console.WriteLine("Description must be at least 6 characters long, please try again!");
+                }
+                Console.Write("Description : ");
+                desc = Console.ReadLine();
+                error = (desc.Length < 6) ? true : false; 
+            } while (error);
 
             Console.Write("Name : ");
-            string name = Console.ReadLine().ToString();
+            string name = Console.ReadLine();
 
-            Console.Write("Deadline : ");
+            Console.Write("Deadline [in 1hr] : ");
             string deadlineInput = Console.ReadLine();
             DateTime deadline;
             if(!DateTime.TryParse(deadlineInput, out deadline))
             {
-                Console.WriteLine("Not a valid \"Deadline\" input, setting default deadline to current time!");
-                deadline = DateTime.Now;
+                Console.WriteLine("Setting default deadline to current time plus 1hr!");
+                deadline = DateTime.Now.AddHours(1);
             }
 
-            Console.Write("Estimation Time : ");
+            Console.Write("Estimation Time [1hr] : ");
             string estimationInput = Console.ReadLine();
             int estimation;
             if(!int.TryParse(estimationInput, out estimation))
             {
-                Console.WriteLine("Not a valid \"Estimation Time\", setting default estimation time to 1 hr");
+                Console.WriteLine("Setting default estimation time to 1 hr");
                 estimation = 1;
             }
 
-            Console.Write("Finished : ");
+            Console.Write("Finished [0]: ");
             string finishedInput = Console.ReadLine();
-            bool finished;
-            if(!bool.TryParse(finishedInput, out finished))
-            {
-                Console.WriteLine("Not a valid \"Finished\" status, setting default finished satus to false");
-                finished = false;
-            }
+            bool finished = finishedInput == "0" ? false : (finishedInput == "1" ? true : false);
 
             AddToDo(desc, name, deadline, estimation, finished);
         }
@@ -112,7 +139,7 @@ namespace ToDoClient
             PrintToDo(toDo);
         }
 
-        private void UpdateToDoStatus()
+        private void UpdateToDoFinishStatus()
         {
             Console.Write("ID : ");
             string idInput = Console.ReadLine();
@@ -122,11 +149,12 @@ namespace ToDoClient
                 ToDo toDo = proxy.GetToDoById(id);
                 if (toDo != null)
                 {
-                    Console.Write("Status : ");
-                    bool status = Convert.ToInt32(Console.ReadLine()) == 0 ? false : true;
-                    toDo.Finnished = status;
+                    Console.Write("Finished [0] : ");
+                    string finishedInput = Console.ReadLine();
+                    bool finished = finishedInput == "0" ? false : (finishedInput == "1" ? true : false);
+                    toDo.Finnished = finished;
                     proxy.UpdateToDo(toDo);
-                    Console.WriteLine("Status for ToDo with ID:{0} updated to {1}", id, status ? "Finished" : "Not finished");
+                    Console.WriteLine("Status for ToDo with ID:{0} updated to {1}", id, finished ? "Finished" : "Not finished");
                     PrintToDo(toDo);
                 }
                 else
@@ -168,19 +196,22 @@ namespace ToDoClient
         static void Main(string[] args)
         {
             ChannelFactory<IToDoService> chF = new ChannelFactory<IToDoService>("ToDoServiceEndpoint");
-            IToDoService proxy = chF.CreateChannel();
+            IToDoService srvProxy = chF.CreateChannel();
 
-            Program prog = new Program(ref proxy);
+            Program prog = new Program(ref srvProxy);
             bool keepRunning = true;
 
             while (keepRunning)
             {
                 prog.PrintMenu();
-                // capture key press
-                char key = Console.ReadKey().KeyChar;
-                Console.WriteLine();
-                // ensure captured key is a valid option
-                int option = (Char.IsDigit(key) ? (int)Char.GetNumericValue(key) : 0);
+                string optionInput = Console.ReadLine();
+                int option;
+                if (!int.TryParse(optionInput, out option))
+                {
+                    Console.WriteLine("Not a valid option {0} please select again!", optionInput);
+                    Console.ReadLine();
+                    continue;
+                }
 
                 switch (option)
                 {
@@ -195,7 +226,7 @@ namespace ToDoClient
                         prog.GetToDoFromUser();
                         break;
                     case 4:
-                        prog.UpdateToDoStatus();
+                        prog.UpdateToDoFinishStatus();
                         break;
                     case 5:
                         prog.DeletToDoItem();
@@ -205,7 +236,8 @@ namespace ToDoClient
                         break;
                     case 0:
                     default:
-                        Console.WriteLine("Not a valid option {0} please choose again!", key);
+                        Console.WriteLine("Not a valid option {0} please select again!", optionInput);
+                        Console.ReadLine();
                         break;
                 }
             }
